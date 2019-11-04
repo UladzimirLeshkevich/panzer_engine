@@ -24,7 +24,13 @@ int main(int /*argc*/, char * /*argv*/[])
     std::vector<std::unique_ptr<bullet>> bullets_pool;
     for (int i = 0; i < 4000; ++i)
     {
-        bullets_pool.push_back(std::unique_ptr<bullet>(new bullet));
+        //bullets_pool.push_back(std::unique_ptr<bullet>(new bullet));
+        //bullets_pool.emplace_back(std::unique_ptr<bullet>(new bullet));//??
+        bullets_pool.emplace_back(new bullet); //faster and more safe
+        //Instead of taking a value_type it takes a variadic list of arguments,
+        //so that means that you can now perfectly forward the arguments
+        //and construct directly an object into a container
+        //without a temporary at all.
     }
 
     //------------------------------------------------
