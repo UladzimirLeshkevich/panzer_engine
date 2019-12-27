@@ -5,9 +5,19 @@ add_executable(${PROJECT_NAME} game.cxx
                                engine.cxx
                                bullet.cxx
                                bullet.hxx
+							   log.h
+                               log.cpp
+                               decorator.cpp
+                               decorator.h
+                               my_log.cpp
+                               my_log.h
+                               log_manager.cpp
+                               log_manager.h
                                )
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
+
+#add_subdirectory(logger_lib)
 
 if (MINGW)
     find_library(SDL2_LIB NAMES libSDL2)
@@ -81,8 +91,12 @@ elseif(UNIX)
                -ldl
                -lpthread
                -lrt
+               -libmf1_logger_lib.dll
                )
 endif()
+
+
+#target_link_libraries(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/libmf1_logger_lib.dll)
 
 file(GLOB resources "res/*")
 file(COPY ${resources} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/res)

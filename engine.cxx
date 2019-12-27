@@ -1,47 +1,48 @@
 ﻿#include "engine.hxx"
+
 #include <iostream>
 
-PFNGLCREATESHADERPROC             glCreateShader             = nullptr;
-PFNGLSHADERSOURCEPROC             glShaderSource             = nullptr;
-PFNGLCOMPILESHADERPROC            glCompileShader            = nullptr;
-PFNGLGETSHADERIVPROC              glGetShaderiv              = nullptr;
-PFNGLGETSHADERINFOLOGPROC         glGetShaderInfoLog         = nullptr;
-PFNGLDELETESHADERPROC             glDeleteShader             = nullptr;
-PFNGLCREATEPROGRAMPROC            glCreateProgram            = nullptr;
-PFNGLATTACHSHADERPROC             glAttachShader             = nullptr;
-PFNGLBINDATTRIBLOCATIONPROC       glBindAttribLocation       = nullptr;
-PFNGLLINKPROGRAMPROC              glLinkProgram              = nullptr;
-PFNGLGETPROGRAMIVPROC             glGetProgramiv             = nullptr;
-PFNGLGETPROGRAMINFOLOGPROC        glGetProgramInfoLog        = nullptr;
-PFNGLDELETEPROGRAMPROC            glDeleteProgram            = nullptr;
-PFNGLUSEPROGRAMPROC               glUseProgram               = nullptr;
-PFNGLVERTEXATTRIBPOINTERPROC      glVertexAttribPointer      = nullptr;
-PFNGLENABLEVERTEXATTRIBARRAYPROC  glEnableVertexAttribArray  = nullptr;
-PFNGLVALIDATEPROGRAMPROC          glValidateProgram          = nullptr;
-PFNGLGETUNIFORMLOCATIONPROC       glGetUniformLocation       = nullptr;
-PFNGLUNIFORM1IPROC                glUniform1i                = nullptr;
-PFNGLACTIVETEXTUREPROC            glActiveTexture_           = nullptr;
-PFNGLUNIFORM4FVPROC               glUniform4fv               = nullptr;
+PFNGLCREATESHADERPROC glCreateShader = nullptr;
+PFNGLSHADERSOURCEPROC glShaderSource = nullptr;
+PFNGLCOMPILESHADERPROC glCompileShader = nullptr;
+PFNGLGETSHADERIVPROC glGetShaderiv = nullptr;
+PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog = nullptr;
+PFNGLDELETESHADERPROC glDeleteShader = nullptr;
+PFNGLCREATEPROGRAMPROC glCreateProgram = nullptr;
+PFNGLATTACHSHADERPROC glAttachShader = nullptr;
+PFNGLBINDATTRIBLOCATIONPROC glBindAttribLocation = nullptr;
+PFNGLLINKPROGRAMPROC glLinkProgram = nullptr;
+PFNGLGETPROGRAMIVPROC glGetProgramiv = nullptr;
+PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfoLog = nullptr;
+PFNGLDELETEPROGRAMPROC glDeleteProgram = nullptr;
+PFNGLUSEPROGRAMPROC glUseProgram = nullptr;
+PFNGLVERTEXATTRIBPOINTERPROC glVertexAttribPointer = nullptr;
+PFNGLENABLEVERTEXATTRIBARRAYPROC glEnableVertexAttribArray = nullptr;
+PFNGLVALIDATEPROGRAMPROC glValidateProgram = nullptr;
+PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation = nullptr;
+PFNGLUNIFORM1IPROC glUniform1i = nullptr;
+PFNGLACTIVETEXTUREPROC glActiveTexture_ = nullptr;
+PFNGLUNIFORM4FVPROC glUniform4fv = nullptr;
 PFNGLDISABLEVERTEXATTRIBARRAYPROC glDisableVertexAttribArray = nullptr;
 
-float       width      = 100.0f;
-float       height     = 100.0f;
-std::string resources  = "res";
-GLuint      texture_id = 0;
-int         location;
+float width = 100.0f;
+float height = 100.0f;
+std::string resources = "res";
+GLuint texture_id = 0;
+int location;
 
 float mouse_x_pos = 0.f;
 float mouse_y_pos = 0.f;
 
-bool mouse_click           = false;
-int  engine::sound_channel = 0;
+bool mouse_click = false;
+int engine::sound_channel = 0;
 
 //==========================================================================
 template <typename T>
 static void load_gl_func(const char* func_name, T& result)
 {
     void* gl_pointer = SDL_GL_GetProcAddress(func_name);
-    result           = reinterpret_cast<T>(gl_pointer);
+    result = reinterpret_cast<T>(gl_pointer);
     if (nullptr == gl_pointer)
     {
         throw std::runtime_error(std::string("can't load GL function") +
@@ -149,81 +150,81 @@ bool engine::events()
     {
         switch (test_event.key.keysym.sym)
         {
-            case (SDLK_w):
-                key_W_flag  = true;
-                speed_to_up = speed_to_up_value;
-                break;
-            case SDLK_s:
-                key_S_flag    = true;
-                speed_to_down = -speed_to_down_value;
-                break;
-            case SDLK_a:
-                key_A_flag    = true;
-                speed_to_left = -speed_to_left_value;
-                break;
-            case SDLK_d:
-                key_D_flag     = true;
-                speed_to_right = speed_to_right_value;
-                break;
-            case SDLK_LCTRL:
-                key_LCTRL_flag = true;
-                break;
-            case SDLK_SPACE:
-                key_SPACE_flag = true;
-                break;
-            case SDLK_RETURN:
-                key_ENTER_flag = true;
-                break;
-            case SDLK_ESCAPE:
-                key_Esc_flag = true;
-                return false;
-            case (SDLK_q):
-                key_Q_flag = true;
-                break;
-            case (SDLK_e):
-                key_E_flag = true;
-                break;
-            default:
-                break;
+        case (SDLK_w):
+            key_W_flag = true;
+            speed_to_up = speed_to_up_value;
+            break;
+        case SDLK_s:
+            key_S_flag = true;
+            speed_to_down = -speed_to_down_value;
+            break;
+        case SDLK_a:
+            key_A_flag = true;
+            speed_to_left = -speed_to_left_value;
+            break;
+        case SDLK_d:
+            key_D_flag = true;
+            speed_to_right = speed_to_right_value;
+            break;
+        case SDLK_LCTRL:
+            key_LCTRL_flag = true;
+            break;
+        case SDLK_SPACE:
+            key_SPACE_flag = true;
+            break;
+        case SDLK_RETURN:
+            key_ENTER_flag = true;
+            break;
+        case SDLK_ESCAPE:
+            key_Esc_flag = true;
+            return false;
+        case (SDLK_q):
+            key_Q_flag = true;
+            break;
+        case (SDLK_e):
+            key_E_flag = true;
+            break;
+        default:
+            break;
         }
     }
     else if (test_event.type == SDL_KEYUP)
     {
         switch (test_event.key.keysym.sym)
         {
-            case SDLK_w:
-                key_W_flag  = false;
-                speed_to_up = 0.0f;
-                break;
-            case SDLK_s:
-                key_S_flag    = false;
-                speed_to_down = 0.0f;
-                break;
-            case SDLK_a:
-                key_A_flag    = false;
-                speed_to_left = 0.0f;
-                break;
-            case SDLK_d:
-                key_D_flag     = false;
-                speed_to_right = 0.0f;
-                break;
-            case SDLK_LCTRL:
-                key_LCTRL_flag = false;
-                break;
-            case SDLK_SPACE:
-                key_SPACE_flag = false;
-                break;
-            case SDLK_RETURN:
-                key_ENTER_flag = false;
-                break;
-            case (SDLK_q):
-                key_Q_flag = false;
-                break;
-            case (SDLK_e):
-                key_E_flag = false;
-                break;
-            default:
-                break;
+        case SDLK_w:
+            key_W_flag = false;
+            speed_to_up = 0.0f;
+            break;
+        case SDLK_s:
+            key_S_flag = false;
+            speed_to_down = 0.0f;
+            break;
+        case SDLK_a:
+            key_A_flag = false;
+            speed_to_left = 0.0f;
+            break;
+        case SDLK_d:
+            key_D_flag = false;
+            speed_to_right = 0.0f;
+            break;
+        case SDLK_LCTRL:
+            key_LCTRL_flag = false;
+            break;
+        case SDLK_SPACE:
+            key_SPACE_flag = false;
+            break;
+        case SDLK_RETURN:
+            key_ENTER_flag = false;
+            break;
+        case (SDLK_q):
+            key_Q_flag = false;
+            break;
+        case (SDLK_e):
+            key_E_flag = false;
+            break;
+        default:
+            break;
         }
     }
     //===== mouse ====
@@ -494,7 +495,7 @@ void engine::render_triangle(const triangle& t)
 //==========================================================================
 void engine::scale_to_screen(triangle& t)
 {
-    float k  = height / width;
+    float k = height / width;
     t.v[0].x = t.v[0].x * k;
     t.v[1].x = t.v[1].x * k;
     t.v[2].x = t.v[2].x * k;
@@ -503,7 +504,7 @@ void engine::scale_to_screen(triangle& t)
 //==========================================================================
 void engine::scale_to_screen(rectangle& r)
 {
-    float k  = height / width;
+    float k = height / width;
     r.v[0].x = r.v[0].x * k;
     r.v[1].x = r.v[1].x * k;
     r.v[2].x = r.v[2].x * k;
@@ -720,9 +721,9 @@ void engine::render_rectangle(const rectangle& r)
 //==========================================================================
 GLuint engine::load_image(std::string filename)
 {
-    std::string  image_parth_and_name = resources + filename;
-    const char*  file                 = image_parth_and_name.data();
-    SDL_Surface* img                  = IMG_Load(file);
+    std::string image_parth_and_name = resources + filename;
+    const char* file = image_parth_and_name.data();
+    SDL_Surface* img = IMG_Load(file);
 
     if (!img)
     {
@@ -742,7 +743,7 @@ GLuint engine::load_image(std::string filename)
     glBindTexture(GL_TEXTURE_2D, texture_id);
 
     GLint mipmap_level = 0;
-    GLint border       = 0;
+    GLint border = 0;
     glTexImage2D(GL_TEXTURE_2D, mipmap_level, GL_RGBA, img->w, img->h, border,
                  GL_RGBA, GL_UNSIGNED_BYTE, img->pixels);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -917,8 +918,9 @@ void engine::pause_ms(int ms)
 }
 
 //====================== PERSON ==============================================
-
-person::person() {}
+//const std::string person::s_person = "person";
+//person::person() : logger(LogManager::get_logger(s_person)) {}
+//::person() {}
 
 //==========================================================================
 person::person(float center_x, float center_y, float width_x, float height_y)
@@ -936,7 +938,7 @@ person::person(float center_x, float center_y, float width_x, float height_y,
 }
 
 //==========================================================================
-person::~person() {}
+//person::~person() {}
 
 //==========================================================================
 void person::set_geometry(float center_x, float center_y, float width_x,
@@ -947,6 +949,8 @@ void person::set_geometry(float center_x, float center_y, float width_x,
 
     this->person_geometry =
         engine::create_rectangle(center_x, center_y, width_x, height_y);
+    //logger << "center_x " << center_x << "center_y " << center_y << INFO;
+    //logger << " DataBase closed by DataBase::close_data_base() " << INFO;
 }
 
 //==========================================================================
@@ -1116,15 +1120,15 @@ void person::normalize_vector(point& v)
     point tmp;
     tmp.x = v.x / sqrt(v.x * v.x + v.y * v.y);
     tmp.y = v.y / sqrt(v.x * v.x + v.y * v.y);
-    v.x   = tmp.x;
-    v.y   = tmp.y;
+    v.x = tmp.x;
+    v.y = tmp.y;
 }
 
 //==========================================================================
 float person::mouse_click_angle()
 {
     float result_angle = 0.f;
-    point tmp          = from_screen_to_opengl2(mouse_x_pos, mouse_y_pos);
+    point tmp = from_screen_to_opengl2(mouse_x_pos, mouse_y_pos);
     // angel between x axis and mouse click vector
 
     float alfa = (acos((abs(tmp.x)) / sqrt(tmp.x * tmp.x + tmp.y * tmp.y))) *
@@ -1218,17 +1222,17 @@ float person::return_angle(const point input_point)
 float person::rotate_direction(const point input)
 {
     float result = 0.0f;
-    point tmp    = from_screen_to_opengl(mouse_x_pos, mouse_y_pos);
+    point tmp = from_screen_to_opengl(mouse_x_pos, mouse_y_pos);
 
-    bool old_vector_in_one   = false;
-    bool old_vector_in_two   = false;
+    bool old_vector_in_one = false;
+    bool old_vector_in_two = false;
     bool old_vector_in_three = false;
-    bool old_vector_in_four  = false;
+    bool old_vector_in_four = false;
 
-    bool new_vector_in_one   = false;
-    bool new_vector_in_two   = false;
+    bool new_vector_in_one = false;
+    bool new_vector_in_two = false;
     bool new_vector_in_three = false;
-    bool new_vector_in_four  = false;
+    bool new_vector_in_four = false;
 
     //===== old vector sector =====
     if (input.y > 0 && input.x > 0)
@@ -1424,7 +1428,7 @@ float person::rotate_direction(const point input)
 point person::get_direction_vector()
 {
     point result;
-    float k  = height / width;
+    float k = height / width;
     result.x = person_geometry.v[4].x * k - 0.0f;
     result.y = person_geometry.v[4].y - 0.0f;
 

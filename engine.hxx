@@ -11,21 +11,24 @@
 #include <string>
 #include <vector>
 
-extern float       width;
-extern float       height;
-extern std::string resources;
-extern GLuint      texture_id;
-extern int         location;
+#include "log_manager.h"
+//#include "logger_lib/include/log.h"
 
-const GLenum      VERTEX_SHADER   = GL_VERTEX_SHADER;
-const GLenum      FRAGMENT_SHADER = GL_FRAGMENT_SHADER;
-const std::string INVERT_TEXTURE  = "Invert texture";
-const std::string FULL_SCREEN     = "Full screen";
-const std::string WINDOW_MODE     = "Window mode";
+extern float width;
+extern float height;
+extern std::string resources;
+extern GLuint texture_id;
+extern int location;
+
+const GLenum VERTEX_SHADER = GL_VERTEX_SHADER;
+const GLenum FRAGMENT_SHADER = GL_FRAGMENT_SHADER;
+const std::string INVERT_TEXTURE = "Invert texture";
+const std::string FULL_SCREEN = "Full screen";
+const std::string WINDOW_MODE = "Window mode";
 
 extern float mouse_x_pos;
 extern float mouse_y_pos;
-extern bool  mouse_click;
+extern bool mouse_click;
 
 class timer;
 class engine;
@@ -95,13 +98,13 @@ public:
 
     //=== sound ===
     Mix_Music* load_music(std::string filename);
-    void       play_music(Mix_Music* music, int volume);
-    void       pause_music();
-    void       resume_music();
-    void       stop_music();
+    void play_music(Mix_Music* music, int volume);
+    void pause_music();
+    void resume_music();
+    void stop_music();
     Mix_Chunk* load_sound(std::string filename);
-    void       play_sound(Mix_Chunk* music, int volume);
-    void       play_sound(Mix_Chunk* music_chunk, int volume, int channel);
+    void play_sound(Mix_Chunk* music, int volume);
+    void play_sound(Mix_Chunk* music_chunk, int volume, int channel);
     void play_sound(Mix_Chunk* music_chunk, int volume, int channel, int loop);
     void stop_sound(int channel);
 
@@ -120,10 +123,10 @@ public:
     //=== openGL ===
     // void create_shader(const std::string shader_src, const GLenum
     // SHADER_TYPE);
-    void  old_create_shader();
-    void  render_triangle(const triangle& t);
-    void  scale_to_screen(triangle& t);
-    void  scale_to_screen(rectangle& r);
+    void old_create_shader();
+    void render_triangle(const triangle& t);
+    void scale_to_screen(triangle& t);
+    void scale_to_screen(rectangle& r);
     float get_k_screen();
 
     rectangle create_rectangle(float center_x, float center_y, float width_x,
@@ -140,7 +143,7 @@ public:
 
     //=== Textures ===
     GLuint load_image(std::string filename);
-    void   render_textured_rectangle(const rectangle& r, GLint texture_number);
+    void render_textured_rectangle(const rectangle& r, GLint texture_number);
 
     //=== Transformations ===
     void trans_matrix(float fdeltaX, float fdeltaY, rectangle& r);
@@ -160,20 +163,20 @@ public:
 
 private:
     SDL_Window* window = nullptr;
-    SDL_Event   test_event;
+    SDL_Event test_event;
 
     //=== screen aspect ratio ===
     float k_screen = 1.0f; //= height / width;
 
     //==== mooving speed X Y ====
-    float speed_to_right       = 0.0f;
-    float speed_to_left        = 0.0f;
-    float speed_to_up          = 0.0f;
-    float speed_to_down        = 0.0f;
+    float speed_to_right = 0.0f;
+    float speed_to_left = 0.0f;
+    float speed_to_up = 0.0f;
+    float speed_to_down = 0.0f;
     float speed_to_right_value = 0.0f;
-    float speed_to_left_value  = 0.0f;
-    float speed_to_up_value    = 0.0f;
-    float speed_to_down_value  = 0.0f;
+    float speed_to_left_value = 0.0f;
+    float speed_to_up_value = 0.0f;
+    float speed_to_down_value = 0.0f;
 
     //=== sound varibles ===
     Mix_Music* music;
@@ -181,16 +184,16 @@ private:
     // int channel;
 
     //=== keyboard flags===
-    bool key_W_flag     = false;
-    bool key_S_flag     = false;
-    bool key_A_flag     = false;
-    bool key_D_flag     = false;
+    bool key_W_flag = false;
+    bool key_S_flag = false;
+    bool key_A_flag = false;
+    bool key_D_flag = false;
     bool key_SPACE_flag = false;
     bool key_LCTRL_flag = false;
     bool key_ENTER_flag = false;
-    bool key_Esc_flag   = false;
-    bool key_Q_flag     = false;
-    bool key_E_flag     = false;
+    bool key_Esc_flag = false;
+    bool key_Q_flag = false;
+    bool key_E_flag = false;
     bool key_MOUSE_flag = false;
 
     //=== openGL ===
@@ -201,14 +204,21 @@ private:
 class person : public engine
 {
 public:
-    person();
+    person()
+    {
+        //logger->open_logfile("D:\\g_log.txt");
+    }
 
     person(float center_x, float center_y, float width_x, float height_y);
 
     person(float center_x, float center_y, float width_x, float height_y,
            std::string invert);
 
-    ~person();
+    ~person()
+    {
+        //logger << " logger->close_log(); " << INFO;
+        //logger->close_log();
+    }
 
     void set_geometry(float center_x, float center_y, float width_x,
                       float height_y);
@@ -233,8 +243,8 @@ public:
 
     rectangle& get_geometry();
 
-    void   set_texture(std::string filename);
-    void   set_texture(GLuint texture_id);
+    void set_texture(std::string filename);
+    void set_texture(GLuint texture_id);
     GLuint get_texture();
 
     void set_texture_to_sprite(std::string filename);
@@ -257,21 +267,23 @@ public:
 
     point get_direction_vector();
 
-    void  set_health(float value);
-    void  make_damage(float value);
+    void set_health(float value);
+    void make_damage(float value);
     float get_health();
-    void  set_render_marker(bool value);
-    bool  get_render_marker();
+    void set_render_marker(bool value);
+    bool get_render_marker();
+
+    std::shared_ptr<Log> logger{LogManager::get_logger("s_person")};
 
 private:
-    bool                render_this = true;
-    float               health      = 10.0f;
+    bool render_this = true;
+    float health = 10.0f;
     std::vector<GLuint> person_sprite;
-    rectangle           person_geometry;
-    point               person_direction;
-    float               speed_x           = 0.0f;
-    float               speed_y           = 0.0f;
-    GLuint              person_texture_id = 0;
+    rectangle person_geometry;
+    point person_direction;
+    float speed_x = 0.0f;
+    float speed_y = 0.0f;
+    GLuint person_texture_id = 0;
 
     float previous_angle = 0.0f;
 };
@@ -286,15 +298,15 @@ public:
     void set_fps(float fps_value);
     void set_number_of_frames(float f);
     void restart();
-    int  current_frame_number(float delta_time);
+    int current_frame_number(float delta_time);
     void set_last_frame(int lf);
-    int  get_last_frame();
+    int get_last_frame();
 
 private:
-    int   number_of_frames; // textures number in one animation
+    int number_of_frames; // textures number in one animation
     float fps;
     float current_time = 0.f;
-    int   last_frame   = 0;
+    int last_frame = 0;
 };
 
 //====================== TIMER ================================================
@@ -302,11 +314,11 @@ class timer
 {
 public:
     timer();
-    void   reset();
+    void reset();
     double elapsed() const;
 
 private:
-    using clock_t  = std::chrono::high_resolution_clock;
+    using clock_t = std::chrono::high_resolution_clock;
     using second_t = std::chrono::duration<double, std::ratio<1>>;
 
     std::chrono::time_point<clock_t> m_beg;

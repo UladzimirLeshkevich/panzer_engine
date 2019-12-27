@@ -6,6 +6,15 @@
 
 int main(int /*argc*/, char* /*argv*/[])
 {
+    const std::string sMAIN = "sMAIN";
+    std::shared_ptr<Log> logger;
+
+    logger = LogManager::get_logger(sMAIN);
+
+    logger->open_logfile("D:\\lll2.txt");
+
+    logger << 42 << " main started " << INFO;
+
     //--------- start engine -------------------
     engine game_engine;
 
@@ -32,16 +41,18 @@ int main(int /*argc*/, char* /*argv*/[])
     bullet_gage.set_geometry(0.0f, 0.24f, 0.05f, 0.1f);
     point bullet_direction;
     float bullet_speed_value = 0.15f;
-    bool  bullet_is_fly      = false;
-    float bullet_delta_time  = 0.0f;
+    bool bullet_is_fly = false;
+    float bullet_delta_time = 0.0f;
     timer bullet_timer;
 
     //----------------------------------------------------------------
-    bool  rotate_flag   = false;
+    bool rotate_flag = false;
     float angle_to_zero = 0.0f;
 
     //----------------------------------------------------------------
     person base;
+    //base.logger->open_logfile(("D:\\pg_log.txt"));
+    //base.logger << " base.set_geometry(0.0f, 0.0f, 0.4f, 0.492857f) " << INFO; //
     base.set_geometry(0.0f, 0.0f, 0.4f, 0.492857f);
     base.set_texture("panzer_base.png");
     float panzer_base_angle_to_zero = 0.0f;
@@ -76,11 +87,11 @@ int main(int /*argc*/, char* /*argv*/[])
     person tower;
     tower.set_geometry(0.0f, 0.05f, 0.2f, 0.246428f);
     tower.set_texture("panzer_tower.png");
-    float     tower_angle_to_zero = 0.0f;
+    float tower_angle_to_zero = 0.0f;
     rectangle tower_geometry;
-    point     tower_direction;
-    float     mouse_click_angle  = 0.0f;
-    float     rotation_direction = 0.0f;
+    point tower_direction;
+    float mouse_click_angle = 0.0f;
+    float rotation_direction = 0.0f;
 
     //----------------------------------------------------------------
     rectangle back;
@@ -113,7 +124,7 @@ int main(int /*argc*/, char* /*argv*/[])
     world_objects.push_back(&someobject7);
     //----------------------------------------------------------------
 
-    bool  move_the_world = false;
+    bool move_the_world = false;
     point world_dir;
     float x_speed = 0.0f;
     float y_speed = 0.0f;
@@ -122,7 +133,7 @@ int main(int /*argc*/, char* /*argv*/[])
     animation run;
     run.set_fps(8);
     run.set_number_of_frames(2);
-    int   run_number = 0;
+    int run_number = 0;
     timer ani_timer;
     float delta_time = 0.f;
 
@@ -147,14 +158,14 @@ int main(int /*argc*/, char* /*argv*/[])
     //-------- sound ------------
     auto engine_sound = game_engine.load_music("engine.mp3");
     game_engine.play_music(engine_sound, 10);
-    auto tower_sound      = game_engine.load_sound("tower.mp3");
-    auto move_sound       = game_engine.load_sound("move2.mp3");
-    auto turn_sound       = game_engine.load_sound("turn.mp3");
-    auto gun              = game_engine.load_sound("gun_fire.mp3");
+    auto tower_sound = game_engine.load_sound("tower.mp3");
+    auto move_sound = game_engine.load_sound("move2.mp3");
+    auto turn_sound = game_engine.load_sound("turn.mp3");
+    auto gun = game_engine.load_sound("gun_fire.mp3");
     bool laser_is_playing = false;
-    bool play_gun_sound   = false;
+    bool play_gun_sound = false;
 
-    bool sound_is_playing  = false;
+    bool sound_is_playing = false;
     bool sound_is_playing2 = false;
 
     bool base_is_rotating = false;
@@ -190,11 +201,11 @@ int main(int /*argc*/, char* /*argv*/[])
         //===============================
 
         //============ TIMERS ====================
-        delta_time             = ani_timer.elapsed();
-        speed_delta_time       = speed_timer.elapsed();
-        base_delta_time        = base_timer.elapsed();
-        tower_delta_time       = tower_timer.elapsed();
-        bullet_delta_time      = bullet_timer.elapsed();
+        delta_time = ani_timer.elapsed();
+        speed_delta_time = speed_timer.elapsed();
+        base_delta_time = base_timer.elapsed();
+        tower_delta_time = tower_timer.elapsed();
+        bullet_delta_time = bullet_timer.elapsed();
         bullets_in_timer_value = bullets_in.elapsed();
         //=========================================
 
@@ -204,8 +215,8 @@ int main(int /*argc*/, char* /*argv*/[])
             move_the_world = true;
 
             rectangle tmp = base.get_geometry();
-            world_dir.x   = tmp.v[4].x - 0.0f;
-            world_dir.y   = tmp.v[4].y - 0.0f;
+            world_dir.x = tmp.v[4].x - 0.0f;
+            world_dir.y = tmp.v[4].y - 0.0f;
             base.normalize_vector(world_dir);
             x_speed = world_dir.x * (-move_speed_value);
             y_speed = world_dir.y * (-move_speed_value);
@@ -236,8 +247,8 @@ int main(int /*argc*/, char* /*argv*/[])
             move_the_world = true;
 
             rectangle tmp = base.get_geometry();
-            world_dir.x   = tmp.v[4].x - 0.0f;
-            world_dir.y   = tmp.v[4].y - 0.0f;
+            world_dir.x = tmp.v[4].x - 0.0f;
+            world_dir.y = tmp.v[4].y - 0.0f;
             base.normalize_vector(world_dir);
             x_speed = world_dir.x * (move_speed_value);
             y_speed = world_dir.y * (move_speed_value);
@@ -295,9 +306,9 @@ int main(int /*argc*/, char* /*argv*/[])
         //============ ROTATE THE TOWER begin ==============
         if (tower.mouse_botton_pressed())
         {
-            mouse_click_angle  = tower.mouse_click_angle();
+            mouse_click_angle = tower.mouse_click_angle();
             rotation_direction = tower.rotate_direction(tower_direction);
-            rotate_flag        = true;
+            rotate_flag = true;
 
             game_engine.play_sound(tower_sound, 90, 2);
         }
@@ -327,7 +338,7 @@ int main(int /*argc*/, char* /*argv*/[])
                                         tower.get_geometry());
                     tower.scale_to_screen(tower.get_geometry());
 
-                    tower_geometry    = tower.get_geometry();
+                    tower_geometry = tower.get_geometry();
                     tower_direction.x = tower_geometry.v[4].x;
                     tower_direction.y = tower_geometry.v[4].y;
                 }
@@ -367,7 +378,7 @@ int main(int /*argc*/, char* /*argv*/[])
                 tower.set_noscale_geometry(0.0f, 0.05f, 0.2f, 0.246428f);
                 tower.rotate_matrix(tower_angle_to_zero, tower.get_geometry());
                 tower.scale_to_screen(tower.get_geometry());
-                tower_geometry    = tower.get_geometry();
+                tower_geometry = tower.get_geometry();
                 tower_direction.x = tower_geometry.v[4].x;
                 tower_direction.y = tower_geometry.v[4].y;
 
@@ -432,7 +443,7 @@ int main(int /*argc*/, char* /*argv*/[])
                 tower.set_noscale_geometry(0.0f, 0.05f, 0.2f, 0.246428f);
                 tower.rotate_matrix(tower_angle_to_zero, tower.get_geometry());
                 tower.scale_to_screen(tower.get_geometry());
-                tower_geometry    = tower.get_geometry();
+                tower_geometry = tower.get_geometry();
                 tower_direction.x = tower_geometry.v[4].x;
                 tower_direction.y = tower_geometry.v[4].y;
 
@@ -603,5 +614,7 @@ int main(int /*argc*/, char* /*argv*/[])
 
     } // GAME LOOP END
 
+    //base.logger->close_log();
+    logger->close_log(); // open/close in main
     return EXIT_SUCCESS;
 }
